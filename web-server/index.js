@@ -2,15 +2,7 @@ const http = require('http')
 const url = require('url')
 const fs = require('fs')
 
-const productsArrray = (tempcard, product) => {
-    let output = tempcard.replace(/{%PRODUCT_NAME%}/g, product.title)
-    output = output.replace(/{%DESCRIPTION%}/g, product.description)
-    output = output.replace(/{%PRICE%}/g, product.price)
-    output = output.replace(/{%RATING%}/g, product.rating)
-    output = output.replace(/{%IMAGE%}/g, product.images[0])
-    output = output.replace(/{%ID%}/g, product.id)
-    return output
-}
+const productsArrray = require('./modules/productsArrray')
 
 const data = fs.readFileSync(`${__dirname}/productsData/products.json`, 'utf-8')
 const homePage = fs.readFileSync(`${__dirname}/templates/homePage.html`, 'utf-8')
