@@ -31,15 +31,30 @@ const getDogPic = async () => {
       `https://dog.ceo/api/breed/${data}/images/random`
     );
     const res3Pro = superagent.get(
-      `https://dog.ceo/api/breed/${data}/images/random`
+      `https://dog.ceo/api/breed/${data}/images/rando`
     );
 
     // with promise.all
-    const all = await Promise.all([res1Pro, res2Pro, res3Pro]);
-    const imgs = all.map(el => el.body.message);
-    console.log(imgs);
+    // const all = await Promise.all([res1Pro, res2Pro, res3Pro]);
+    // const imgs = all.map(el => el.body.message);
+    // console.log(imgs);
 
-    await writeFilePro('dog-img.txt', imgs.join('\n'));
+    // Using Promise.allSettled instead of Promise.all
+    const all = await Promise.allSettled([res1Pro, res2Pro, res3Pro]);
+    const successfulResponses = all
+      .filter(result => result.status === 'fulfilled')
+      .map(result => result.value.body.message);
+    
+    const unsuccessfulResponses = all
+    .filter(result => result.status === 'rejected')
+    .map(result => result.reason);
+
+    console.log('Successful Responses:');
+    console.log(successfulResponses);
+    console.log('Unsuccessful Responses:');
+    console.log(unsuccessfulResponses);
+
+    await writeFilePro('dog-img.txt', successfulResponses.join('\n'));
     console.log('Random dog image saved to file!');
   } catch (err) {
     console.log(err);
@@ -59,32 +74,3 @@ const getDogPic = async () => {
     console.log('ERROR 💥');
   }
 })();
-
-/*
-console.log('1: Will get dog pics!');
-getDogPic()
-  .then(x => {
-    console.log(x);
-    console.log('3: Done getting dog pics!');
-  })
-  .catch(err => {
-    console.log('ERROR 💥');
-  });
-*/
-/*
-readFilePro(`${__dirname}/dog.txt`)
-  .then(data => {
-    console.log(`Breed: ${data}`);
-    return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
-  })
-  .then(res => {
-    console.log(res.body.message);
-    return writeFilePro('dog-img.txt', res.body.message);
-  })
-  .then(() => {
-    console.log('Random dog image saved to file!');
-  })
-  .catch(err => {
-    console.log(err);
-  });
-*/
