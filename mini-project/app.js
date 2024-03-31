@@ -9,7 +9,7 @@ app.use(express.json())
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
 
 // get all tours data
-const getAlltours = (req, res) => {
+const getAllTours = (req, res) => {
     res.status(200).json({
         status: "success",
         results: tours.length,
@@ -20,7 +20,7 @@ const getAlltours = (req, res) => {
 }
 
 // create tour
-const createtour = (req, res) => {
+const createTour = (req, res) => {
     const formData = req.body
     const newId = tours[tours.length - 1].id + 1
     const newTour = Object.assign({ id: newId }, formData)
@@ -110,7 +110,7 @@ const deleteTour = (req, res) => {
 // app.patch('/api/v1/tour/:id', updateTour) 
 // app.delete('/api/v1/tour/:id', deleteTour) 
 
-app.route('/api/v1/tours').get(getAlltours).post(createtour)
+app.route('/api/v1/tours').get(getAllTours).post(createTour)
 
 app.route('/api/v1/tour/:id').patch(updateTour).get(getSingleTour).delete(deleteTour)
 
