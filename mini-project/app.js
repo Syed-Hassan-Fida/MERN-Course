@@ -141,13 +141,20 @@ const deleteUser = (req, res) => {
 // app.patch('/api/v1/tour/:id', updateTour) 
 // app.delete('/api/v1/tour/:id', deleteTour) 
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour)
+const tourRouters = express.Router()
+const userRouters = express.Router()
 
-app.route('/api/v1/tour/:id').patch(updateTour).get(getSingleTour).delete(deleteTour)
 
-app.route('/api/v1/users').get(getAllUsers).post(createUser)
+tourRouters.route('/').get(getAllTours).post(createTour)
 
-app.route('/api/v1/user/:id').patch(updateUser).get(getSingleUser).delete(deleteUser)
+tourRouters.route('/:id').patch(updateTour).get(getSingleTour).delete(deleteTour)
+
+userRouters.route('/').get(getAllUsers).post(createUser)
+
+userRouters.route('/:id').patch(updateUser).get(getSingleUser).delete(deleteUser)
+
+app.use('/api/v1/tours', tourRouters)
+app.use('/api/v1/users', userRouters)
 
 
 app.listen(port, '127.0.0.1', () => {
