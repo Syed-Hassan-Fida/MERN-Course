@@ -104,6 +104,37 @@ const deleteTour = (req, res) => {
     }
 }
 
+const getAllUsers = (req, res) => {
+    res.status(500).json({
+        message: "logic is not defined yet..."
+    })
+} 
+
+
+const createUser = (req, res) => {
+    res.status(500).json({
+        message: "logic is not defined yet..."
+    })
+} 
+
+const updateUser = (req, res) => {
+    res.status(500).json({
+        message: "logic is not defined yet..."
+    })
+} 
+
+const getSingleUser = (req, res) => {
+    res.status(500).json({
+        message: "logic is not defined yet..."
+    })
+} 
+
+const deleteUser = (req, res) => {
+    res.status(500).json({
+        message: "logic is not defined yet..."
+    })
+} 
+
 // app.get('/api/v1/tours', getAlltpurs)
 // app.post('/api/v1/tours', createtour)
 // app.get('/api/v1/tour/:id', getSingleTour)
@@ -113,6 +144,10 @@ const deleteTour = (req, res) => {
 app.route('/api/v1/tours').get(getAllTours).post(createTour)
 
 app.route('/api/v1/tour/:id').patch(updateTour).get(getSingleTour).delete(deleteTour)
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser)
+
+app.route('/api/v1/user/:id').patch(updateUser).get(getSingleUser).delete(deleteUser)
 
 
 app.listen(port, '127.0.0.1', () => {
