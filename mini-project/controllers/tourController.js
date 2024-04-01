@@ -2,6 +2,30 @@ const fs = require('fs')
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
+// checkID middleware
+exports.CheckID = (req, res, next, val) => {
+    console.log("id", val)
+    const id = req.params.id * 1 // type conversion
+    if (id > tours.length) {
+        return res.status(404).json({ // return is used to block the next execution
+            status: "fail",
+            message: "INVALID ID"
+        })
+    }
+    next()
+}
+
+// checBody Middleware
+exports.checkBody = (req, res, next) => {
+    if (!req.body.name || !req.body.price) {
+        return res.status(400).json({
+            status: "Fail",
+            message: "Name or Price Missing..."
+        })
+    }
+    next()
+}
+
 // get all tours data
 exports.getAllTours = (req, res) => {
     res.status(200).json({
@@ -21,7 +45,7 @@ exports.createTour = (req, res) => {
 
     tours.push(newTour)
 
-    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), (err) => {
+    fs.writeFile(`${__dirname}/../dev-data/data/tours-simple.json`, JSON.stringify(tours), (err) => {
         if (err) {
             res.status(404).json({
                 status: "error",
@@ -42,58 +66,35 @@ exports.createTour = (req, res) => {
 
 // get single tour data
 exports.getSingleTour = (req, res) => {
-    const id = req.params.id * 1 // type conversion
     const singleTour = tours.find(el => el.id === id)
 
-    if (!singleTour) {
-        res.status(404).json({
-            status: "fail",
-            message: "INVALID ID"
-        })
-    } else {
-        res.status(200).json({
-            status: "success",
-            data: {
-                singleTour
-            }
-        })
-    }
+    res.status(200).json({
+        status: "success",
+        data: {
+            singleTour
+        }
+    })
+
 }
 
 // update tour
 exports.updateTour = (req, res) => {
-
-    const id = req.params.id * 1 // type conversion
-    if (id > tours.length) {
-        res.status(404).json({
-            status: "fail",
-            message: "INVALID ID"
-        })
-    } else {
-        res.status(200).json({
-            status: "success",
-            message: "Updated Successfully",
-            data: {
-                tour: req.body
-            }
-        })
-    }
+    res.status(200).json({
+        status: "success",
+        message: "Updated Successfully",
+        data: {
+            tour: req.body
+        }
+    })
 }
 
 // delete tour
 exports.deleteTour = (req, res) => {
 
-    const id = req.params.id * 1 // type conversion
-    if (id > tours.length) {
-        res.status(404).json({
-            status: "fail",
-            message: "INVALID ID"
-        })
-    } else {
-        res.status(204).json({
-            status: "success",
-            message: "Deleted Successfully",
-            data: null
-        })
-    }
+    res.status(204).json({
+        status: "success",
+        message: "Deleted Successfully",
+        data: null
+    })
+
 }
