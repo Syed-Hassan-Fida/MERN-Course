@@ -1,16 +1,5 @@
 const Tour = require('./../modals/tourModal')
 
-// checBody Middleware
-exports.checkBody = (req, res, next) => {
-    if (!req.body.name || !req.body.price) {
-        return res.status(400).json({
-            status: "Fail",
-            message: "Name or Price Missing..."
-        })
-    }
-    next()
-}
-
 // get all tours data
 exports.getAllTours = (req, res) => {
     res.status(200).json({
